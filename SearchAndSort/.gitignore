@@ -1,0 +1,7 @@
+.idea/
+*.cache
+.vs/
+bin/
+SearchAndSort/bin/
+obj/
+SearchAndSort/obj/
