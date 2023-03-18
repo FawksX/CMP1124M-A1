@@ -6,7 +6,7 @@
 public class DataResult {
 
     private readonly DataProvider dataProvider;
-    private readonly OrderState orderState;
+    public readonly OrderState orderState;
     private readonly int[] data;
     
     public DataResult(int[] rawData, DataProvider dataProvider, OrderState orderState) {
@@ -25,20 +25,35 @@ public class DataResult {
     }
 
     public ExactDataPosition GetDataPositionExact(int number) {
-        return new ExactDataPosition(number, dataProvider.search.FindIndexes(data, number));
+        return new ExactDataPosition(number, dataProvider.search.FindIndexes(this, data, number));
     }
 
     public NearestDataPosition GetNearestDataPosition(int number) {
-        return new NearestDataPosition(number, dataProvider.search.FindNearestNumbersAndIndex(data, number));
+        return new NearestDataPosition(number, dataProvider.search.FindNearestNumbersAndIndex(this, data, number));
     }
 
     public DataResult Reverse() {
+        dataProvider.sort.Flip(data);
+        return this;
+        
         return new DataResult(
             dataProvider.sort.Flip(data),
             dataProvider,
             orderState == OrderState.Ascending ? OrderState.Descending : OrderState.Ascending
         );
     }
-    
+
+    public void PrintData() {
+        for (int i = 0; i < data.Length; i++) {
+            Util.Print($"Index {i}; Val {data[i]}");
+        }
+    }
+
+    public void PrintData(int step) {
+        for (int i = 0; i < data.Length; i += step) {
+            Util.Print($"Index {i}; Val {data[i]}");
+        }
+    }
+
 }
 

@@ -2,16 +2,16 @@
 
 public interface ISearch {
 
-    List<int> FindIndexes(int[] data, int number);
+    List<int> FindIndexes(DataResult dataResult, int[] data, int number);
 
     // Number Found : Index
-    (int, List<int>) FindNearestNumbersAndIndex(int[] data, int number) {
+    (int, List<int>) FindNearestNumbersAndIndex(DataResult dataResult, int[] data, int number) {
 
         var stepOut = 0;
 
         while (true) {
-            var numbersLeft = FindIndexes(data, number - stepOut);
-            var numbersRight = FindIndexes(data, number + stepOut);
+            var numbersLeft = FindIndexes(dataResult, data, number - stepOut);
+            var numbersRight = FindIndexes(dataResult, data, number + stepOut);
 
             if (numbersLeft.Count != 0) {
                 return (number - stepOut, numbersLeft);
@@ -30,7 +30,7 @@ public interface ISearch {
 
 public class BinarySearch : ISearch {
 
-    public List<int> FindIndexes(int[] data, int number) {
+    public List<int> FindIndexes(DataResult dataResult, int[] data, int number) {
 
         var found = false;
         var low = 0;
@@ -44,9 +44,18 @@ public class BinarySearch : ISearch {
                 found = true;
                 foundIndex = mid;
             } else if (data[mid] < number) {
-                low = mid + 1;
+                if (dataResult.orderState == OrderState.Ascending) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+                
             } else {
-                high = mid - 1;
+                if (dataResult.orderState == OrderState.Ascending) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
             }
         }
 
@@ -92,7 +101,7 @@ public class BinarySearch : ISearch {
 
 public class LinearSearch : ISearch {
     
-    public List<int> FindIndexes(int[] data, int number) {
+    public List<int> FindIndexes(DataResult dataResult, int[] data, int number) {
 
         var indexes = new List<int>();
         var found = false;

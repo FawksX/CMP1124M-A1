@@ -45,6 +45,10 @@ public class Road {
         return new RoadBuilder(path);
     }
 
+    public static RoadBuilder Builder() {
+        return new RoadBuilder();
+    }
+
     public class RoadBuilder {
 
         private string? path;
@@ -95,6 +99,16 @@ public class Roads {
     private static Road Initialise(string path) {
         return Road.Builder(path).Build();
     }
-    
+
+    public static Road? FromMagic(int number) {
+        return number switch {
+            1 => ROAD_1_256,
+            2 => ROAD_2_256,
+            3 => ROAD_3_256,
+            4 => ROAD_1_2048,
+            5 => ROAD_2_2048,
+            6 => ROAD_3_2048
+        };
+    }
     
 }

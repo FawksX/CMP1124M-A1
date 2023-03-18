@@ -20,16 +20,13 @@ public interface ISort {
      * Assumes it is already sorted.
      */
     int[] Flip(int[] data) {
-        var descendingLength = data.Length;
-        var reverse = new int[descendingLength];
-        var length = descendingLength - 1;
+        var length = data.Length;
 
-        for (var i = 0; i < descendingLength; i++) {
-            reverse[i] = data[length];
-            length--;
+        for (var i = 0; i < length / 2; i++) {
+            (data[i], data[length - i - 1]) = (data[length - i - 1], data[i]);
         }
-
-        return reverse;
+        
+        return data;
     }
 
     string GetName() {
@@ -64,7 +61,7 @@ public class BubbleSort : ISort {
 
 [Name("Insertion Sort")]
 public class InsertionSort : ISort {
-    // todo
+
     public int[] Descending(int[] data) {
         var length = data.Length;
 
@@ -162,12 +159,12 @@ public class MergeSort : ISort {
 
 [Name("Cocktail Shaker Sort")]
 public class CocktailShakerSort : ISort {
-    // todo
+
     public int[] Descending(int[] data) {
 
-        var swapped = false;
+        var swapped = true;
         var start = 0;
-        var length = data.Length;
+        var length = data.Length -1;
 
         while (swapped) {
             swapped = false;
@@ -192,9 +189,8 @@ public class CocktailShakerSort : ISort {
                     swapped = true;
                 }
             }
-
+            
             start++;
-
         }
 
         return data;
