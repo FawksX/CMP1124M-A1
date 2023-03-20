@@ -34,9 +34,9 @@ public class Testing {
         Util.Print($"Printing Data Descending (every 10 values) for road {name}");
         result.PrintData(step);
 
-        var reverse = result.Reverse();
+        result.Reverse();
         Util.Print($"Printing Data Ascending (every 10 values) for road {name}");
-        reverse.PrintData(step);
+        result.PrintData(step);
     }
 
     private static void Functionality3And4() {
@@ -84,7 +84,7 @@ public class Testing {
             var position = data.GetDataPositionExact(number2);
             if (position.IsEmpty()) {
                 var nearest = data.GetNearestDataPosition(number2);
-                Util.Print($"Data Position for {position.request} does not exist! The Nearest Positions are {nearest}");
+                Util.Print($"Data Position for {position.request} does not exist! The Nearest Number is {nearest.Result().Item1} with indexes {string.Join(",", nearest.Result().Item2)}");
                 return true;
             }
 

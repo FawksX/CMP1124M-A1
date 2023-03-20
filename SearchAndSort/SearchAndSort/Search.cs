@@ -1,10 +1,32 @@
 ﻿namespace SearchAndSort;
 
+/**
+ * <summary>
+ * ISearch Interface
+ * Acts as an abstraction over any search implemented in this project, meaning we can abstract all other search code
+ * throughout the project.
+ * </summary>
+ */
 public interface ISearch {
 
+    /**
+     * <summary>
+     * Finds all indexes for the requested number
+     * </summary>
+     * <returns>
+     * Returns a List of indexes, which could be empty if no indexes are found.
+     * </returns>
+     */
     List<int> FindIndexes(DataResult dataResult, int[] data, int number);
 
-    // Number Found : Index
+    /**
+     * <summary>
+     * Finds the nearest number with indexes to the requested number
+     * </summary>
+     * <returns>
+     * Returns a Tuple with the nearest number (Item1) and it's indexes (Item2)
+     * </returns>
+     */
     (int, List<int>) FindNearestNumbersAndIndex(DataResult dataResult, int[] data, int number) {
 
         var stepOut = 0;
@@ -28,6 +50,13 @@ public interface ISearch {
 
 }
 
+/**
+ * <summary>
+ * A Simple Binary Search
+ * O(log N) "Divide and Conquer" based searching algorithm where the list is continuously split in half
+ * until the value is found.
+ * </summary>
+ */
 public class BinarySearch : ISearch {
 
     public List<int> FindIndexes(DataResult dataResult, int[] data, int number) {
@@ -44,6 +73,8 @@ public class BinarySearch : ISearch {
                 found = true;
                 foundIndex = mid;
             } else if (data[mid] < number) {
+                // Depending on the ordering of the array, we need to do different operations, so check before
+                // sorting:
                 if (dataResult.orderState == OrderState.Ascending) {
                     low = mid + 1;
                 } else {
@@ -64,8 +95,13 @@ public class BinarySearch : ISearch {
             return list;
         }
         
+        // This is the middle value, we now need to find every other value
         list.Add(foundIndex);
 
+        // So we add the middle value to the list, then go from this index left and right
+        // to find every other missing value (as the list is ordered, the first index which isn't what we're looking for
+        // is the end of that side.
+        
         // check left side first:
         var foundAllLeft = false;
         high = foundIndex - 1;
@@ -99,6 +135,13 @@ public class BinarySearch : ISearch {
     
 }
 
+/**
+ * <summary>
+ * Linear Search
+ * O(N) Algorithm which iterates the array until the first index is found, and then keeps iterating until all elements have
+ * been found
+ * </summary>
+ */
 public class LinearSearch : ISearch {
     
     public List<int> FindIndexes(DataResult dataResult, int[] data, int number) {
@@ -125,6 +168,11 @@ public class LinearSearch : ISearch {
     
 }
 
+/**
+ * <summary>
+ * A class which stores our Binary and Linear Search Singletons.
+ * </summary>
+ */
 public class Search {
 
     public static readonly BinarySearch BINARY_SEARCH = new BinarySearch();
