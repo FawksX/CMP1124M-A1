@@ -2,7 +2,7 @@
 
 /**
  * <summary>
- * An immutable object which is returned by <see cref="Road.GetData"/>. This is filled by the <see cref="DataProvider"/>
+ * An object which is returned by <see cref="Road.GetData"/>. This is filled by the <see cref="DataProvider"/>
  * and <see cref="OrderState"/> provided by the developer.
  *
  * This DataResult stores a copy of the road data and can be manipulated by the sorts without issue, as the Road

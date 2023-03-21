@@ -1,22 +1,5 @@
 ﻿namespace SearchAndSort;
 
-using System;
-
-/**
- * <summary>
- * An Attribute for the sort name, reduces the length of the sort
- * classes slightly.
- * </summary>
- */
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class NameAttribute : Attribute {
-    public string name;
-
-    public NameAttribute(string name) {
-        this.name = name;
-    }
-}
-
 /**
  * <summary>
  * Abstract Sort Interface
@@ -45,15 +28,7 @@ public interface ISort {
     }
 
     string GetName() {
-        var type = typeof(NameAttribute);
-        var attribute = Attribute.GetCustomAttribute(type, type);
-
-        if (attribute != null) {
-            return ((NameAttribute)attribute).name;
-        }
-
-        Console.WriteLine($"ERROR: Sort {GetType().Name} is missing Name Attribute!");
-        return "";
+        return GetType().Name;
     }
 }
 
@@ -71,7 +46,6 @@ public interface ISort {
  * numbers to the top.
  * </summary>
  */
-[Name("Bubble Sort")]
 public class BubbleSort : ISort {
     public int[] Descending(int[] data) {
         var length = data.Length;
@@ -98,7 +72,6 @@ public class BubbleSort : ISort {
  * and so on - until the list is sorted.
  * </summary>
  */
-[Name("Insertion Sort")]
 public class InsertionSort : ISort {
     public int[] Descending(int[] data) {
         var length = data.Length;
@@ -139,7 +112,6 @@ public class InsertionSort : ISort {
  * single-integer arrays, and then combine and merge in-place (done by checking left.First() <= right.First())
  * </summary>
 **/
-[Name("Merge Sort")]
 public class MergeSort : ISort {
     public int[] Descending(int[] data) {
         return Sort(data.ToList()).ToArray();
@@ -210,7 +182,6 @@ public class MergeSort : ISort {
  * it will then work backwards and push a value as far down as neccesary.
  * </summary>
  */
-[Name("Cocktail Shaker Sort")]
 public class CocktailShakerSort : ISort {
     public int[] Descending(int[] data) {
         var swapped = true;
@@ -247,7 +218,7 @@ public class CocktailShakerSort : ISort {
         if (!(data[index] > data[index + 1])) {
             return false;
         }
-        Swap(data, data[index], data[index + 1]);
+        Swap(data, index, index + 1);
         return true;
     }
     
